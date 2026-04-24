@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Classified Mission</title>
+<style>
+  body {
+    background: black;
+    color: #03A062;
+    font-family: monospace;
+    text-align: center;
+    margin-top: 100px;
+  }
+</style>
+</head>
+<body>
+
+<h1>CLASSIFIED MESSAGE</h1>
+<p id="msg">Your mission, should you choose to accept it...</p>
+<h2 id="timer">10</h2>
+
+<script>
+let time = 60;
+let timer = document.getElementById("timer");
+
+let countdown = setInterval(() => {
+  time--;
+  timer.innerText = time;
+
+  if (time <= 0) {
+    clearInterval(countdown);
+    document.body.innerHTML = "<h1>MESSAGE DELETED</h1>";
+  }
+}, 1000);
+</script>
+
+</body>
+</html>
