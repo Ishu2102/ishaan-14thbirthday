@@ -18,6 +18,14 @@
     font-size: 60px;
   }
 
+  .blink {
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0.5; }
+  }
+
   #timer {
     font-size: 80px;
     margin-top: 20px;
@@ -44,17 +52,39 @@
 </head>
 <body>
 
-<h1>CLASSIFIED MESSAGE</h1>
+<h1 class="blink">CLASSIFIED MESSAGE</h1>
 
-<p>Your mission, should you choose to accept it:</p>
-<p>Join us on the 27th of April, 2026 for Ishaan's 14th Birthday</p>
-<p>Reach the safe house before 6:00 PM (202, SBI Executive Enclave)</p>
-<p>You will receive further intel upon arrival</p>
-<p>This message will self destruct in 1 minute</p>
+<p id="typing"></p>
+<p id="line2" style="display:none;">Join us on the 27th of April, 2026 for Ishaan's 14th Birthday</p>
+<p id="line3" style="display:none;">Reach the safe house before 6:00 PM (202, SBI Executive Enclave)</p>
+<p id="line4" style="display:none;">You will receive further intel upon arrival</p>
+<p id="line5" style="display:none;">This message will self destruct in 1 minute</p>
 
 <h2 id="timer">60</h2>
 
 <script>
+// TYPING EFFECT
+const text = "Your mission, should you choose to accept it:";
+let i = 0;
+
+function typeEffect() {
+  if (i < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeEffect, 40);
+  } else {
+    // reveal remaining lines after typing
+    document.getElementById("line2").style.display = "block";
+    document.getElementById("line3").style.display = "block";
+    document.getElementById("line4").style.display = "block";
+    document.getElementById("line5").style.display = "block";
+  }
+}
+
+typeEffect();
+
+
+// COUNTDOWN
 let time = 60;
 let timer = document.getElementById("timer");
 
@@ -62,17 +92,23 @@ let countdown = setInterval(() => {
   time--;
   timer.innerText = time;
 
+  // turn red in last 10 seconds
+  if (time <= 10) {
+    timer.style.color = "red";
+  }
+
   if (time <= 0) {
     clearInterval(countdown);
     startMatrix();
   }
 }, 1000);
 
+
 // MATRIX EFFECT FUNCTION
 function startMatrix() {
   document.body.innerHTML = `
     <canvas id="matrix"></canvas>
-    <div class="deleted-text">MESSAGE DELETED</div>
+    <div class="deleted-text">💣 MESSAGE DELETED 💣</div>
   `;
 
   const canvas = document.getElementById("matrix");
