@@ -47,6 +47,12 @@
     font-size: 50px;
     text-shadow: 0 0 15px red;
   }
+
+  /* Optional blinking cursor */
+  #typing::after {
+    content: "|";
+    animation: blink 1s infinite;
+  }
 </style>
 
 </head>
@@ -55,33 +61,42 @@
 <h1 class="blink">CLASSIFIED MESSAGE</h1>
 
 <p id="typing"></p>
-<p id="line2" style="display:none;">Join us on the 27th of April, 2026 for Ishaan's 14th Birthday</p>
-<p id="line3" style="display:none;">Reach the safe house before 6:00 PM (202, SBI Executive Enclave)</p>
-<p id="line4" style="display:none;">You will receive further intel upon arrival</p>
-<p id="line5" style="display:none;">This message will self destruct in 1 minute</p>
 
 <h2 id="timer">60</h2>
 
 <script>
-// TYPING EFFECT
-const text = "Your mission, should you choose to accept it:";
-let i = 0;
+// ALL LINES TO TYPE
+const lines = [
+  "Your mission, should you choose to accept it:",
+  "Join us on the 27th of April, 2026 for Ishaan's 14th Birthday",
+  "Reach the safe house before 6:00 PM (202, SBI Executive Enclave)",
+  "You will receive further intel upon arrival",
+  "This message will self destruct in 1 minute"
+];
 
-function typeEffect() {
-  if (i < text.length) {
-    document.getElementById("typing").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typeEffect, 40);
-  } else {
-    // reveal remaining lines after typing
-    document.getElementById("line2").style.display = "block";
-    document.getElementById("line3").style.display = "block";
-    document.getElementById("line4").style.display = "block";
-    document.getElementById("line5").style.display = "block";
+let lineIndex = 0;
+let charIndex = 0;
+const speed = 40;
+
+// TYPE EFFECT
+function typeLines() {
+  if (lineIndex < lines.length) {
+    let currentLine = lines[lineIndex];
+
+    if (charIndex < currentLine.length) {
+      document.getElementById("typing").innerHTML += currentLine.charAt(charIndex);
+      charIndex++;
+      setTimeout(typeLines, speed);
+    } else {
+      document.getElementById("typing").innerHTML += "<br><br>";
+      lineIndex++;
+      charIndex = 0;
+      setTimeout(typeLines, 400);
+    }
   }
 }
 
-typeEffect();
+typeLines();
 
 
 // COUNTDOWN
